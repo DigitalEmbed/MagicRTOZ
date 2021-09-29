@@ -7,21 +7,17 @@
     #include <unistd.h>
 #endif
 
-static bool $app_weak = false;
-
-__attribute__((weak)) void boot(void)
+__attribute__((constructor))
+void system_init(void)
 {
-    $app_weak = true;
-    return;
+    printf("Initializing system...\n");
 }
 
-int main()
+__attribute__((destructor))
+void system_run(void)
 {
-    //$process_init();
-    printf("Initializing system...\n");
-    boot();
     printf("System initialized!\n\n");
-    while($app_weak == false)
+    for(;;)
     {
         $process_schedule(); //put it on a timer interrupt callback
         //execute all events
@@ -31,5 +27,4 @@ int main()
             usleep(1000 * PROCESS_MINIMUM_TIME_WAITING_MS); //configure your timer to overflow at THREAD_MINIMUM_TIME_WAITING ms.
         #endif
     }
-    return 0;
 }

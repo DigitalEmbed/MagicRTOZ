@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
 #include <stdlib.h>
 #include <stdint.h>
 #include "./slist.h"
@@ -77,3 +81,7 @@ void $process_resume(process_t* process);
 void $process_suspend(process_t* process);
 void $process_priority_set(process_t* process, uint8_t priority);
 const char* $process_getName(process_t* process);
+
+#ifdef __cplusplus
+  }
+#endif

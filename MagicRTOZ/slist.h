@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -61,3 +65,7 @@ int8_t slist_position_move(slist_t* slistSender, uint8_t position, slist_t* slis
 const void* slist_position_dataGet(slist_t* slist, uint8_t position);
 
 uint8_t slist_size_get(slist_t* slist);
+
+#ifdef __cplusplus
+  }
+#endif

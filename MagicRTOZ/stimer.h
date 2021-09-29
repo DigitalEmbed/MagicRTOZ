@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
 #include <stdlib.h>
 #include <stdint.h>
 #include "./process.h"
@@ -7,8 +11,8 @@
 
 #define STIMER_NEW(name, callback, arguments) \
 {\
-    .$arguments = (arguments),\
-    .$callback = (callback),\
+    .$arguments = (const void*) (arguments),\
+    .$callback = (const void (*)(void*)) (callback),\
     .$selement = LIST_ELEMENT_NEW(NULL, 0),\
     .$process = PROCESS_NEW((name), PROCESS_TYPE_TIMER, NULL),\
 }
@@ -16,7 +20,7 @@
 #define STIMER_INIT(callback, argument, argument_type) \
 void callback(void* $self)\
 {\
-    argument_type* argument = (void*) ((stimer_t*) $self)->$arguments;\
+    argument_type* argument = (argument_type*) ((stimer_t*) $self)->$arguments;\
 
 #define STIMER_END \
     (void)(argument);\
@@ -61,3 +65,7 @@ void stimer_resume(stimer_t* stimer);
 void stimer_priority_set(stimer_t* stimer, uint8_t priority);
 void stimer_waitingTimer_set(stimer_t* stimer, uint32_t time_waiting_ms);
 const char* stimer_getName(stimer_t* stimer);
+
+#ifdef __cplusplus
+  }
+#endif

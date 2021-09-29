@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
 #include <stdlib.h>
 #include <stdint.h>
 #include "./process.h"
@@ -8,8 +12,8 @@
 
 #define TASK_NEW(name, callback, arguments) \
 {\
-    .$arguments = (arguments),\
-    .$callback = (callback),\
+    .$arguments = (const void*) (arguments),\
+    .$callback = (const void (*)(void*)) (callback),\
     .$line = 0,\
     .$time_waiting_ms = 0,\
     .$selement = LIST_ELEMENT_NEW(NULL, 0),\
@@ -19,7 +23,7 @@
 #define TASK_INIT(callback, argument, argument_type) \
 void callback(void* $self)\
 {\
-    argument_type* argument = (void*) ((task_t*) $self)->$arguments;\
+    argument_type* argument = (argument_type*) ((task_t*) $self)->$arguments;\
     (void)(argument);\
     switch(((task_t*) $self)->$line)\
     {\
@@ -56,3 +60,7 @@ void task_suspend(task_t* task);
 void task_resume(task_t* task);
 void task_priority_set(task_t* task, uint8_t priority);
 const char* task_getName(task_t* task);
+
+#ifdef __cplusplus
+  }
+#endif
