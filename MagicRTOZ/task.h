@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef __cplusplus
-  extern "C" {
+    extern "C" {
 #endif
 
 #include <stdlib.h>
@@ -62,5 +62,5 @@ void task_priority_set(task_t* task, uint8_t priority);
 const char* task_getName(task_t* task);
 
 #ifdef __cplusplus
-  }
+    }
 #endif

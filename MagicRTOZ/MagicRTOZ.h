@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef __cplusplus
-  extern "C" {
+    extern "C" {
 #endif
 
 #include "./slist.h"
@@ -9,5 +9,5 @@
 #include "./stimer.h"
 
 #ifdef __cplusplus
-  }
+    }
 #endif

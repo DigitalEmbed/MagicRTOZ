@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef __cplusplus
-  extern "C" {
+    extern "C" {
 #endif
 
 #include <stdlib.h>
@@ -83,5 +83,5 @@ void $process_priority_set(process_t* process, uint8_t priority);
 const char* $process_getName(process_t* process);
 
 #ifdef __cplusplus
-  }
+    }
 #endif

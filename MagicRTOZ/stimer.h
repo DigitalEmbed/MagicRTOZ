@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef __cplusplus
-  extern "C" {
+    extern "C" {
 #endif
 
 #include <stdlib.h>
@@ -67,5 +67,5 @@ void stimer_waitingTimer_set(stimer_t* stimer, uint32_t time_waiting_ms);
 const char* stimer_getName(stimer_t* stimer);
 
 #ifdef __cplusplus
-  }
+    }
 #endif

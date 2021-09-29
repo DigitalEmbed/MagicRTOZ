@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef __cplusplus
-  extern "C" {
+    extern "C" {
 #endif
 
 #include <stdint.h>
@@ -67,5 +67,5 @@ const void* slist_position_dataGet(slist_t* slist, uint8_t position);
 uint8_t slist_size_get(slist_t* slist);
 
 #ifdef __cplusplus
-  }
+    }
 #endif
