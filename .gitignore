@@ -1,6 +1,12 @@
 # Tests
 main.c
 
+# CMake Files
+cmake-build-debug/
+
+# CLion IDE
+.idea
+
 # CodeBlocks IDE
 bin/
 obj/
