@@ -1,5 +1,41 @@
-/**
- * Coded by Jorge Henrique Moreira Santana.
+/*! Static list API
+ *  \brief      Linked lists with priority classification that not use memory allocations API.
+ *  \details    This class is used to demonstrate a number of section commands.
+ *  \example    Inserting and getting list data.
+ *  \code{.c}
+ *  int main(){
+ *      static int myData1 = 10;
+ *      static selement_t myDataElement1 = LIST_ELEMENT_NEW(
+ *          &myData1,               // Data pointer
+ *          1                       // Priority
+ *      );
+ *
+ *      static int myData2 = -5;
+ *      static selement_t myDataElement2 = LIST_ELEMENT_NEW(&myData2, 0);
+ *
+ *      slist_t myList = LIST_NEW();
+ *      int position1 = slist_selement_insert(&myList, &myDataElement1);
+ *      int position2 = slist_selement_insert(&myList, &myDataElement2);
+ *
+ *      LIST_FOREACH_INIT(
+ *          myList,                 // List
+ *          buffer,                 // Data element pointer buffer
+ *          int                     // Data element type
+ *      )
+ *      {
+ *          printf("Position %d: %d\n", LIST_FOREACH_POSITION, *buffer);
+ *      }
+ *      LIST_FOREACH_END
+ *
+ *      return 0;
+ *  }
+ *  \endcode
+ *  \author     Jorge Henrique Moreira Santana
+ *  \version    0.1a
+ *  \date       02/10/2021
+ *  \bug        This API needs more testing to find bugs.
+ *  \warning    Be very careful when using Macros. Variables and functions starting with the '$' character are private and must not be modified.
+ *  \copyright  MIT License.
  */
 
 #pragma once
@@ -48,9 +84,10 @@
 */
 #define LIST_FOREACH_INIT(slist, selement, selement_type)\
 {\
-    for (uint8_t counter = 0 ; counter < slist_size_get(&slist) ; counter++)\
+    for (uint8_t $counter = 0 ; $counter < slist_size_get(&slist) ; $counter++)\
     {\
-        selement_type* selement = (selement_type*) slist_position_dataGet(&slist, counter);
+        uint8_t LIST_FOREACH_POSITION = $counter;\
+        selement_type* selement = (selement_type*) slist_position_dataGet(&slist, $counter);
 
 /*! \def LIST_FOREACH_END
     \brief End of for-each list loop structure.
