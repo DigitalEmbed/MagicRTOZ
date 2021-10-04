@@ -27,7 +27,7 @@
 #define PROCESS_SLICE_CREATE(schedule_callback, run_callback, id_variable)\
 {\
     static process_slice_t process_slice = PROCESS_SLICE_NEW(schedule_callback, run_callback);\
-    static selement_t slice_selement = LIST_ELEMENT_NEW(&process_slice, 0);\
+    static selement_t slice_selement = SLIST_ELEMENT_NEW(&process_slice, 0);\
     if (id_variable == 0)\
     {\
         id_variable = $process_init(&slice_selement);\

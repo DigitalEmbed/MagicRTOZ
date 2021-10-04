@@ -1,51 +1,79 @@
 #include "./slist.h"
 
-int8_t slist_selement_insert(slist_t* slist, selement_t* selement)
+int8_t slist_create(slist_t* slist)
 {
     /*
-        Declarations
-    */
+     * Checking if it's safe to instantiate the object.
+     */
+    if (slist != NULL && slist->$first_selement == NULL)
+    {
+        slist->$size = 0;
+        return 1;
+    }
+    return -1;
+}
+
+int8_t slist_selement_create(selement_t* selement, const void* data, uint8_t priority)
+{
+    /*
+     * Checking if it's safe to instantiate the object.
+     */
+    if (data != NULL && selement != NULL && selement->$next == NULL)
+    {
+        selement->$data = data;
+        selement->$priority = priority;
+        selement->$slist = NULL;
+        return 1;
+    }
+    return -1;
+}
+
+int8_t slist_selement_insert(slist_t* slist, selement_t* selement)
+{
     selement_t* buffer = slist->$first_selement;
     uint8_t position = 2;
 
     /*
-        Returns error in NULL selement case
-    */
+     * Checking errors in function parameters.
+     */
     if (selement == NULL || selement->$slist != NULL)
     {
         return -1;
     }
 
+    /*
+     * First insertion
+     */
     selement->$slist = (struct slist_t*) slist;
     slist->$size++;
-    /*
-        First insertion
-    */
     if (slist->$first_selement == NULL)
     {
+        selement->$slist = slist;
         slist->$first_selement = selement;
         selement->$next = NULL;
         return 0;
     }
 
     /*
-        Insertion in first selement position
-    */
+     * Insertion in first element position.
+     */
     if (slist->$first_selement->$priority > selement->$priority)
     {
+        selement->$slist = slist;
         selement->$next = slist->$first_selement;
         slist->$first_selement = selement;
         return 1;
     }
 
     /*
-        Insertion in other positions
-    */
+     * Insertion in other positions.
+     */
     while(buffer->$next != NULL && buffer->$next->$priority <= selement->$priority)
     {
         buffer = buffer->$next;
         position++;
     }
+    selement->$slist = slist;
     selement->$next = buffer->$next;
     buffer->$next = selement;
     return position;
@@ -56,6 +84,9 @@ int8_t slist_selement_delete(selement_t* selement)
     slist_t* slist = selement->$slist;
     selement_t* buffer = slist->$first_selement;
 
+    /*
+     * Checking errors in function parameters.
+     */
     if (selement == NULL || selement->$slist == NULL)
     {
         return -1;
@@ -79,6 +110,7 @@ int8_t slist_selement_delete(selement_t* selement)
     }
 
     selement->$slist = NULL;
+    selement->$next = NULL;
     slist->$size--;
     return slist->$size;
 }
@@ -95,8 +127,8 @@ int8_t slist_selement_move(selement_t* selement, slist_t* slist)
 int8_t slist_position_delete(slist_t* slist, uint8_t position)
 {
     /*
-        Returns error in NULL slist or invalid position cases
-    */
+     * Checking errors in function parameters.
+     */
     if (slist == NULL || position >= slist->$size)
     {
         return -1;
@@ -108,13 +140,15 @@ int8_t slist_position_delete(slist_t* slist, uint8_t position)
 
     if (position == 0)
     {
+        slist->$first_selement->$slist = NULL;
         slist->$first_selement = buffer->$next;
     }
     else
     {
+
         /*
-            Searching position selement
-        */
+         * Searching position element.
+         */
         for (uint8_t counter = 0 ; counter < position - 1 ; counter ++)
         {
             buffer = buffer->$next;
@@ -123,6 +157,7 @@ int8_t slist_position_delete(slist_t* slist, uint8_t position)
                 break;
             }
         }
+        buffer->$next->$slist = NULL;
         buffer->$next = buffer->$next->$next;
     }
 
@@ -141,22 +176,19 @@ int8_t slist_position_move(slist_t* slistSender, uint8_t position, slist_t* slis
 
 selement_t* slist_selement_get(slist_t* slist, uint8_t position)
 {
-    /*
-        Declarations
-    */
     selement_t* buffer = slist->$first_selement;
 
     /*
-        Returns error in NULL slist or invalid position cases
-    */
+     * Checking errors in function parameters.
+     */
     if (slist == NULL || position >= slist->$size)
     {
         return NULL;
     }
 
     /*
-        Searching position selement
-    */
+     * Searching position element.
+     */
     for (uint8_t counter = 0 ; counter < position ; counter ++)
     {
         buffer = buffer->$next;

@@ -4,10 +4,10 @@
 
 #include <string.h>
 
-static slist_t $waiting_process_slist = LIST_NEW();
-static slist_t $running_process_slist = LIST_NEW();
-static slist_t $stopped_process_slist = LIST_NEW();
-static slist_t $slice_process_slist = LIST_NEW();
+static slist_t $waiting_process_slist = SLIST_NEW();
+static slist_t $running_process_slist = SLIST_NEW();
+static slist_t $stopped_process_slist = SLIST_NEW();
+static slist_t $slice_process_slist = SLIST_NEW();
 
 static process_t* $running_process = NULL;
 static uint16_t $running_process_runtime_ms = 0;
@@ -37,7 +37,7 @@ void $process_schedule(void)
             //reset_uC()
         }
     }
-    LIST_FOREACH_INIT($waiting_process_slist, process_buffer, process_t)
+    SLIST_FOREACH_INIT($waiting_process_slist, process_buffer, process_t)
     {
         if (current_slice == NULL || current_slice->$id != process_buffer->$id)
         {
@@ -53,7 +53,7 @@ void $process_schedule(void)
             }
         }
     }
-    LIST_FOREACH_END
+    SLIST_FOREACH_END
 }
 
 void $process_run(void)

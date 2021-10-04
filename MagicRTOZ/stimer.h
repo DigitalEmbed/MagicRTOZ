@@ -13,7 +13,7 @@
 {\
     .$arguments = (const void*) (arguments),\
     .$callback = (const void (*)(void*)) (callback),\
-    .$selement = LIST_ELEMENT_NEW(NULL, 0),\
+    .$selement = SLIST_ELEMENT_NEW(NULL, 0),\
     .$process = PROCESS_NEW((name), PROCESS_TYPE_TIMER, NULL),\
 }
 

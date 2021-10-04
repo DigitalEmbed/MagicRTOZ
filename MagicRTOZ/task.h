@@ -16,7 +16,7 @@
     .$callback = (const void (*)(void*)) (callback),\
     .$line = 0,\
     .$time_waiting_ms = 0,\
-    .$selement = LIST_ELEMENT_NEW(NULL, 0),\
+    .$selement = SLIST_ELEMENT_NEW(NULL, 0),\
     .$process = PROCESS_NEW((name), 0, NULL),\
 }
 
