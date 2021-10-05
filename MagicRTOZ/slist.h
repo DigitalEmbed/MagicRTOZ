@@ -20,6 +20,7 @@
     // object outside of function scopes.
     slist_t myList = SLIST_NEW();
 
+    __attribute__((weak))
     int main(){
         int position1 = slist_selement_insert(&myList, &myDataElement1);
         int position2 = slist_selement_insert(&myList, &myDataElement2);
@@ -39,9 +40,10 @@
  *  \endcode
  *  \example    2 - Moving local data into static lists.
  *  \code{.c}
- *  int main()
+    __attribute__((weak))
+    int main()
     {
-        // All variables must be global or static!
+        // All local variables must be static!
         static slist_t listA;
         static slist_t listB;
         static float pi = 3.14;

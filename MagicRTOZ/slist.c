@@ -18,7 +18,7 @@ int8_t slist_selement_create(selement_t* selement, const void* data, uint8_t pri
     /*
      * Checking if it's safe to instantiate the object.
      */
-    if (data != NULL && selement != NULL && selement->$next == NULL)
+    if (data != NULL && selement != NULL && selement->$slist == NULL && selement->$next == NULL)
     {
         selement->$data = data;
         selement->$priority = priority;
