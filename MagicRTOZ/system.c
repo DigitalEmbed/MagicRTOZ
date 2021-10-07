@@ -19,9 +19,9 @@ void system_run(void)
     printf("System initialized!\n\n");
     for(;;)
     {
-        $process_schedule(); //put it on a timer interrupt callback
+        _process_schedule(); //put it on a timer interrupt callback
         //execute all events
-        $process_run();
+        _process_run();
         //sleep_until_interrupt
         #if defined(__linux__)
             usleep(1000 * PROCESS_MINIMUM_TIME_WAITING_MS); //configure your timer to overflow at THREAD_MINIMUM_TIME_WAITING ms.

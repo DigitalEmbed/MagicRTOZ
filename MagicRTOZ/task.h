@@ -12,20 +12,19 @@
 
 #define TASK_NEW(name, callback, arguments) \
 {\
-    .$arguments = (const void*) (arguments),\
-    .$callback = (const void (*)(void*)) (callback),\
-    .$line = 0,\
-    .$time_waiting_ms = 0,\
-    .$selement = SLIST_ELEMENT_NEW(NULL, 0),\
-    .$process = PROCESS_NEW((name), 0, NULL),\
+    $PROCESS_BUILDER(name)\
+    ._arguments = (const void*) (arguments),\
+    ._callback = (const void (*)(void*)) (callback),\
+    ._line = 0,\
+    ._time_waiting_ms = 0,\
 }
 
 #define TASK_INIT(callback, argument, argument_type) \
-void callback(void* $self)\
+void callback(void* _self)\
 {\
-    argument_type* argument = (argument_type*) ((task_t*) $self)->$arguments;\
+    argument_type* argument = (argument_type*) ((task_t*) _self)->_arguments;\
     (void)(argument);\
-    switch(((task_t*) $self)->$line)\
+    switch(((task_t*) _self)->_line)\
     {\
         default:\
         {\
@@ -35,23 +34,22 @@ void callback(void* $self)\
 
 #define TASK_END\
     }\
-    ((task_t*) $self)->$time_waiting_ms = (PROCESS_MINIMUM_TIME_WAITING_MS);\
-    ((task_t*) $self)->$line = 0;\
+    ((task_t*) _self)->_time_waiting_ms = (PROCESS_MINIMUM_TIME_WAITING_MS);\
+    ((task_t*) _self)->_line = 0;\
 }
 
 #define TASK_YIELD() task_delay(0)
 
 #define TASK_DELAY(time_ms)\
-    ((task_t*) $self)->$time_waiting_ms = ((time_ms) > (PROCESS_MINIMUM_TIME_WAITING_MS) ? (time_ms) : (PROCESS_MINIMUM_TIME_WAITING_MS)) ; ((task_t*) $self)->$line = __LINE__ ; return ; case __LINE__:
+    ((task_t*) _self)->_time_waiting_ms = ((time_ms) > (PROCESS_MINIMUM_TIME_WAITING_MS) ? (time_ms) : (PROCESS_MINIMUM_TIME_WAITING_MS)) ; ((task_t*) _self)->_line = __LINE__ ; return ; case __LINE__:
 
 typedef struct task_t
 {
-    const void* $arguments;
-    const void (*$callback)(void* self);
-    uint16_t $line;
-    uint32_t $time_waiting_ms;
-    selement_t $selement;
-    process_t $process;
+    $PROCESS
+    const void* _arguments;
+    const void (*_callback)(void* self);
+    uint16_t _line;
+    uint32_t _time_waiting_ms;
 }
 task_t;
 

@@ -11,16 +11,15 @@
 
 #define STIMER_NEW(name, callback, arguments) \
 {\
-    .$arguments = (const void*) (arguments),\
-    .$callback = (const void (*)(void*)) (callback),\
-    .$selement = SLIST_ELEMENT_NEW(NULL, 0),\
-    .$process = PROCESS_NEW((name), PROCESS_TYPE_TIMER, NULL),\
+    $PROCESS_BUILDER(name)\
+    ._arguments = (const void*) (arguments),\
+    ._callback = (const void (*)(void*)) (callback),\
 }
 
 #define STIMER_INIT(callback, argument, argument_type) \
-void callback(void* $self)\
+void callback(void* _self)\
 {\
-    argument_type* argument = (argument_type*) ((stimer_t*) $self)->$arguments;\
+    argument_type* argument = (argument_type*) ((stimer_t*) _self)->_arguments;\
 
 #define STIMER_END \
     (void)(argument);\
@@ -28,12 +27,12 @@ void callback(void* $self)\
 
 #define STIMER_RUN_ONCE_INIT \
 {\
-    static bool $run_once = false;\
-    if ($run_once == false)\
+    static bool _run_once = false;\
+    if (_run_once == false)\
     {
 
 #define STIMER_RUN_ONCE_END \
-        $run_once = true;\
+        _run_once = true;\
     }\
 }
 
@@ -48,14 +47,13 @@ stimer_run_mode_t;
 
 typedef struct stimer_t
 {
-    const char* $name;
-    const void* $arguments;
-    const void (*$callback)(void* self);
-    uint32_t $time_waiting_ms;
-    uint32_t $time_counter_ms;
-    stimer_run_mode_t $run_mode;
-    selement_t $selement;
-    process_t $process;
+    $PROCESS
+    const char* _name;
+    const void* _arguments;
+    const void (*_callback)(void* self);
+    uint32_t _time_waiting_ms;
+    uint32_t _time_counter_ms;
+    stimer_run_mode_t _run_mode;
 }
 stimer_t;
 

@@ -172,7 +172,7 @@
  *  \date       02/10/2021
  *  \bug        This API needs more testing to find bugs.
  *  \warning    Be very careful when using Macros.
- *              Variables and functions starting with the '$' character are private and must not be modified.
+ *              Variables and functions starting with the '_' character are private and must not be modified.
  *              All data variables must be global or static.
  *  \copyright  MIT License.
  */
@@ -194,8 +194,8 @@
 */
 #define SLIST_NEW()\
 {\
-    .$size = 0,\
-    .$first_selement = NULL,\
+    ._size = 0,\
+    ._first_selement = NULL,\
 }
 
 /*! \def SLIST_ELEMENT_NEW(variable, priority)
@@ -208,10 +208,10 @@
 */
 #define SLIST_ELEMENT_NEW(data_pointer, priority)\
 {\
-    .$priority = (priority),\
-    .$data = (const void*) (data_pointer),\
-    .$slist = NULL,\
-    .$next = NULL,\
+    ._priority = (priority),\
+    ._data = (const void*) (data_pointer),\
+    ._slist = NULL,\
+    ._next = NULL,\
 }
 
 /*! \def SLIST_FOREACH_INIT(slist, selement, selement_type)
@@ -223,10 +223,10 @@
 */
 #define SLIST_FOREACH_INIT(slist, selement, selement_type)\
 {\
-    for (uint8_t $counter = 0 ; $counter < slist_size_get(&slist) ; $counter++)\
+    for (uint8_t _counter = 0 ; _counter < slist_size_get(&slist) ; _counter++)\
     {\
-        uint8_t LIST_FOREACH_POSITION = $counter;\
-        selement_type* selement = (selement_type*) slist_position_dataGet(&slist, $counter);
+        uint8_t LIST_FOREACH_POSITION = _counter;\
+        selement_type* selement = (selement_type*) slist_position_dataGet(&slist, _counter);
 
 /*! \def LIST_FOREACH_END
     \brief End of for-each list loop structure.
@@ -240,10 +240,10 @@
  */
 typedef struct selement_t
 {
-    uint8_t $priority;                      //!< Priority value.
-    const void* $data;                      //!< Data pointer.
-    struct slist_t* $slist;                 //!< List where the element is contained.
-    struct selement_t* $next;               //!< Link to next element in the list.
+    uint8_t _priority;                      //!< Priority value.
+    const void* _data;                      //!< Data pointer.
+    struct slist_t* _slist;                 //!< List where the element is contained.
+    struct selement_t* _next;               //!< Link to next element in the list.
 }
 selement_t;
 
@@ -252,8 +252,8 @@ selement_t;
  */
 typedef struct slist_t
 {
-    uint8_t $size;                          //!< Size of list.
-    selement_t* $first_selement;            //!< First element pointer.
+    uint8_t _size;                          //!< Size of list.
+    selement_t* _first_selement;            //!< First element pointer.
 }
 slist_t;
 

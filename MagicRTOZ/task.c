@@ -3,48 +3,48 @@
 
 #include <string.h>
 
-void $task_schedule(process_t* process);
-void $task_run(process_t* process);
+void _task_schedule(process_t* process);
+void _task_run(process_t* process);
 
-static task_t* $running_task = NULL;
+static task_t* _running_task = NULL;
 
 void task_install(task_t* task, uint8_t priority)
 {
     static uint8_t process_id = 0;
-    PROCESS_SLICE_CREATE(&$task_schedule, &$task_run, process_id);
-    if (process_id != 0 && task->$selement.$slist == NULL)
+    PROCESS_SLICE_CREATE(&_task_schedule, &_task_run, process_id);
+    if (process_id != 0 && task->_selement._slist == NULL)
     {
-        task->$process.$id = process_id;
-        task->$time_waiting_ms = (PROCESS_MINIMUM_TIME_WAITING_MS);
-        task->$process.$data = (void*) task;
-        task->$process.$status = PROCESS_STATUS_WAIT;
-        task->$process.$selement = &task->$selement;
-        task->$selement.$data = (const void*) &task->$process;
-        $process_install(&task->$process, priority);
+        task->_process._id = process_id;
+        task->_time_waiting_ms = (PROCESS_MINIMUM_TIME_WAITING_MS);
+        task->_process._data = (void*) task;
+        task->_process._status = PROCESS_STATUS_WAIT;
+        task->_process._selement = &task->_selement;
+        task->_selement._data = (const void*) &task->_process;
+        _process_install(&task->_process, priority);
     }
 }
 
 void task_suspend(task_t* task)
 {
-    if (task != NULL && task->$process.$data != NULL)
+    if (task != NULL && task->_process._data != NULL)
     {
-        $process_suspend(&task->$process);
+        _process_suspend(&task->_process);
     }
     else
     {
-        $process_suspend(NULL);
+        _process_suspend(NULL);
     }
 }
 
 void task_resume(task_t* task)
 {
-    if (task != NULL && task->$process.$data != NULL)
+    if (task != NULL && task->_process._data != NULL)
     {
-        $process_resume(&task->$process);
+        _process_resume(&task->_process);
     }
     else
     {
-        $process_resume(NULL);
+        _process_resume(NULL);
     }
 }
 
@@ -52,11 +52,11 @@ void task_priority_set(task_t* task, uint8_t priority)
 {
     if (task != NULL)
     {
-        $process_priority_set(&task->$process, priority);
+        _process_priority_set(&task->_process, priority);
     }
     else
     {
-        $process_priority_set(NULL, priority);
+        _process_priority_set(NULL, priority);
     }
 }
 
@@ -64,37 +64,37 @@ const char* task_getName(task_t* task)
 {
     if (task != NULL)
     {
-        return $process_getName(&task->$process);
+        return _process_getName(&task->_process);
     }
-    return $process_getName(NULL);
+    return _process_getName(NULL);
 }
 
-void $task_schedule(process_t* process)
+void _task_schedule(process_t* process)
 {
     if (process != NULL)
     {
-        task_t* task_buffer = (task_t*) process->$data;
-        if (task_buffer->$time_waiting_ms == 0)
+        task_t* task_buffer = (task_t*) process->_data;
+        if (task_buffer->_time_waiting_ms == 0)
         {
-            process->$status = PROCESS_STATUS_RUN;
+            process->_status = PROCESS_STATUS_RUN;
         }
         else
         {
-            task_buffer->$time_waiting_ms = task_buffer->$time_waiting_ms > (PROCESS_MINIMUM_TIME_WAITING_MS) ? task_buffer->$time_waiting_ms - (PROCESS_MINIMUM_TIME_WAITING_MS) : 0;
+            task_buffer->_time_waiting_ms = task_buffer->_time_waiting_ms > (PROCESS_MINIMUM_TIME_WAITING_MS) ? task_buffer->_time_waiting_ms - (PROCESS_MINIMUM_TIME_WAITING_MS) : 0;
         }
     }
 }
 
-void $task_run(process_t* process)
+void _task_run(process_t* process)
 {
     if (process != NULL)
     {
-        $running_task = (task_t*) process->$data;
-        $running_task->$callback($running_task);
-        if (process->$status != PROCESS_STATUS_STOP)
+        _running_task = (task_t*) process->_data;
+        _running_task->_callback(_running_task);
+        if (process->_status != PROCESS_STATUS_STOP)
         {
-            process->$status = PROCESS_STATUS_WAIT;
+            process->_status = PROCESS_STATUS_WAIT;
         }
-        $running_task = NULL;
+        _running_task = NULL;
     }
 }
