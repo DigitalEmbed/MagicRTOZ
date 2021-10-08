@@ -11,7 +11,7 @@
 
 #define STIMER_NEW(name, callback, arguments) \
 {\
-    $PROCESS_BUILDER(name)\
+    PROCESS_BUILD(name),\
     ._arguments = (const void*) (arguments),\
     ._callback = (const void (*)(void*)) (callback),\
 }
@@ -36,7 +36,6 @@ void callback(void* _self)\
     }\
 }
 
-
 typedef enum stimer_run_mode_t
 {
     STIMER_RUN_MODE_ONCE = 0,
@@ -47,7 +46,7 @@ stimer_run_mode_t;
 
 typedef struct stimer_t
 {
-    $PROCESS
+    PROCESS_STRUCT;
     const char* _name;
     const void* _arguments;
     const void (*_callback)(void* self);
@@ -57,7 +56,7 @@ typedef struct stimer_t
 }
 stimer_t;
 
-void stimer_install(stimer_t* stimer, uint8_t priority, uint32_t time_waiting_ms, stimer_run_mode_t run_mode);
+int8_t stimer_install(stimer_t* stimer, uint8_t priority, uint32_t time_waiting_ms, stimer_run_mode_t run_mode);
 void stimer_suspend(stimer_t* stimer);
 void stimer_resume(stimer_t* stimer);
 void stimer_priority_set(stimer_t* stimer, uint8_t priority);

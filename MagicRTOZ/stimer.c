@@ -1,5 +1,4 @@
 #include "./stimer.h"
-#include "./process.h"
 #include "./config.h"
 
 #include <string.h>
@@ -9,22 +8,17 @@ void _stimer_run(process_t* process);
 
 stimer_t* _running_stimer = NULL;
 
-void stimer_install(stimer_t* stimer, uint8_t priority, uint32_t time_waiting_ms, stimer_run_mode_t run_mode)
+int8_t stimer_install(stimer_t* stimer, uint8_t priority, uint32_t time_waiting_ms, stimer_run_mode_t run_mode)
 {
-    static uint8_t process_id = 0;
-    PROCESS_SLICE_CREATE(&_stimer_schedule, &_stimer_run, process_id);
-    if (process_id != 0 && stimer->_selement._slist == NULL && stimer->_run_mode < STIMER_RUN_MODE_SIZE)
+    if (run_mode < STIMER_RUN_MODE_SIZE)
     {
-        stimer->_process._id = process_id;
         stimer->_time_waiting_ms = time_waiting_ms < (PROCESS_MINIMUM_TIME_WAITING_MS) ? (PROCESS_MINIMUM_TIME_WAITING_MS) : time_waiting_ms;
-        stimer->_run_mode = run_mode >= STIMER_RUN_MODE_SIZE ? STIMER_RUN_MODE_SIZE : run_mode;
         stimer->_time_counter_ms = stimer->_time_waiting_ms;
-        stimer->_process._data = (void*) stimer;
-        stimer->_process._status = PROCESS_STATUS_WAIT;
-        stimer->_process._selement = &stimer->_selement;
-        stimer->_selement._data = (const void*) &stimer->_process;
-        _process_install(&stimer->_process, priority);
+        stimer->_run_mode = run_mode;
+        PROCESS_INSTALL(stimer, priority, _stimer_schedule, _stimer_run);
+        return 1;
     }
+    return -1;
 }
 
 void stimer_suspend(stimer_t* stimer)

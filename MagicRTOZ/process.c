@@ -12,7 +12,7 @@ static slist_t _slice_process_slist = SLIST_NEW();
 static process_t* _running_process = NULL;
 static uint16_t _running_process_runtime_ms = 0;
 
-uint8_t _process_init(selement_t* slice)
+int8_t _process_init(selement_t* slice)
 {
     if (slice != NULL && slice->_data != NULL)
     {
@@ -20,7 +20,7 @@ uint8_t _process_init(selement_t* slice)
         ((process_slice_t*) slice->_data)->_id = slist_size_get(&_slice_process_slist);
         return ((process_slice_t*) slice->_data)->_id;
     }
-    return 0;
+    return -1;
 }
 
 void _process_schedule(void)
@@ -83,13 +83,15 @@ void _process_run(void)
     }
 }
 
-void _process_install(process_t* process, uint8_t priority)
+int8_t _process_install(process_t* process, uint8_t priority)
 {
     if(process != NULL && process->_selement != NULL)
     {
         process->_selement->_priority = priority;
         slist_selement_insert(&_waiting_process_slist, process->_selement);
+        return 1;
     }
+    return -1;
 }
 
 void _process_resume(process_t* process)

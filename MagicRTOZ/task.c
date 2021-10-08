@@ -1,6 +1,4 @@
 #include "./task.h"
-#include "./process.h"
-
 #include <string.h>
 
 void _task_schedule(process_t* process);
@@ -8,20 +6,11 @@ void _task_run(process_t* process);
 
 static task_t* _running_task = NULL;
 
-void task_install(task_t* task, uint8_t priority)
+int8_t task_install(task_t* task, uint8_t priority)
 {
-    static uint8_t process_id = 0;
-    PROCESS_SLICE_CREATE(&_task_schedule, &_task_run, process_id);
-    if (process_id != 0 && task->_selement._slist == NULL)
-    {
-        task->_process._id = process_id;
-        task->_time_waiting_ms = (PROCESS_MINIMUM_TIME_WAITING_MS);
-        task->_process._data = (void*) task;
-        task->_process._status = PROCESS_STATUS_WAIT;
-        task->_process._selement = &task->_selement;
-        task->_selement._data = (const void*) &task->_process;
-        _process_install(&task->_process, priority);
-    }
+    task->_time_waiting_ms = (PROCESS_MINIMUM_TIME_WAITING_MS);
+    PROCESS_INSTALL(task, priority, &_task_schedule, &_task_run);
+    return 1;
 }
 
 void task_suspend(task_t* task)

@@ -27,39 +27,48 @@
 #include <stdint.h>
 #include "./slist.h"
 
-#define PROCESS_NEW(name, id, data)\
+#define PROCESS_INSTALL(object_pointer, priority, schedule_callback, run_callback)\
 {\
-    ._name = name,\
-    ._id = id,\
-    ._data = data,\
-    ._last_runtime_ms = 0,\
-    ._average_runtime_ms = 0,\
-}
-
-#define PROCESS_SLICE_NEW(schedule_callback, run_callback)\
-{\
-    ._schedule = schedule_callback,\
-    ._run = run_callback,\
-    ._id = 0,\
-}
-
-#define PROCESS_SLICE_CREATE(schedule_callback, run_callback, id_variable)\
-{\
-    static process_slice_t process_slice = PROCESS_SLICE_NEW(schedule_callback, run_callback);\
-    static selement_t slice_selement = SLIST_ELEMENT_NEW(&process_slice, 0);\
-    if (id_variable == 0)\
+    static process_slice_t _process_slice = {\
+        ._schedule = (schedule_callback),\
+        ._run = (run_callback),\
+        ._id = 0,\
+    };\
+    static selement_t _slice_selement = SLIST_ELEMENT_NEW(&_process_slice, 0);\
+    static int8_t _process_id = 0;\
+    process_t* _process = &(object_pointer)->_process;\
+    if (_process_id == 0)\
     {\
-        id_variable = _process_init(&slice_selement);\
+        _process_id = _process_init(&_slice_selement);\
+    }\
+    if (_process_id == -1 || (object_pointer)->_selement._slist != NULL)\
+    {\
+        return -1;\
+    }\
+    _process->_status = PROCESS_STATUS_WAIT;\
+    _process->_selement = &(object_pointer)->_selement;\
+    _process->_selement->_data = (void *) _process;\
+    _process->_data = (void *) (object_pointer);\
+    _process->_id = _process_id;\
+    if (_process_install(_process, (priority)) == -1)\
+    {\
+        return -1;\
     }\
 }
 
-#define $PROCESS\
+#define PROCESS_STRUCT\
     selement_t _selement;\
     process_t _process;\
 
-#define $PROCESS_BUILDER(name)\
+#define PROCESS_BUILD(name)\
     ._selement = SLIST_ELEMENT_NEW(NULL, 0),\
-    ._process = PROCESS_NEW((name), 0, NULL),\
+    ._process = {\
+        ._name = (name),\
+        ._id = 0,\
+        ._data = NULL,\
+        ._last_runtime_ms = 0,\
+        ._average_runtime_ms = 0,\
+    }
 
 typedef enum
 {
@@ -89,10 +98,10 @@ typedef struct process_slice_t
 }
 process_slice_t;
 
-uint8_t _process_init(selement_t* slice);
+int8_t _process_init(selement_t* slice);
 void _process_schedule(void);
 void _process_run(void);
-void _process_install(process_t* process, uint8_t priority);
+int8_t _process_install(process_t* process, uint8_t priority);
 void _process_resume(process_t* process);
 void _process_suspend(process_t* process);
 void _process_priority_set(process_t* process, uint8_t priority);

@@ -12,14 +12,14 @@
 
 #define TASK_NEW(name, callback, arguments) \
 {\
-    $PROCESS_BUILDER(name)\
+    PROCESS_BUILD(name),\
     ._arguments = (const void*) (arguments),\
     ._callback = (const void (*)(void*)) (callback),\
     ._line = 0,\
     ._time_waiting_ms = 0,\
 }
 
-#define TASK_INIT(callback, argument, argument_type) \
+#define TASK_INIT(callback, argument, argument_type)\
 void callback(void* _self)\
 {\
     argument_type* argument = (argument_type*) ((task_t*) _self)->_arguments;\
@@ -45,7 +45,7 @@ void callback(void* _self)\
 
 typedef struct task_t
 {
-    $PROCESS
+    PROCESS_STRUCT;
     const void* _arguments;
     const void (*_callback)(void* self);
     uint16_t _line;
@@ -53,7 +53,7 @@ typedef struct task_t
 }
 task_t;
 
-void task_install(task_t* task, const uint8_t priority);
+int8_t task_install(task_t* task, const uint8_t priority);
 void task_suspend(task_t* task);
 void task_resume(task_t* task);
 void task_priority_set(task_t* task, uint8_t priority);
