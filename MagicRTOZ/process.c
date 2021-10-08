@@ -93,15 +93,18 @@ int8_t _process_install(selement_t* slice_element, process_t* object_process, se
         slice_element != NULL &&
         object_process != NULL &&
         object_element != NULL &&
-        object != NULL &&
-        ((process_slice_t*) slice_element->_data)->_id > 0
+        object != NULL
     )
     {
+        object_process->_id = _process_init(slice_element);
+        if (object_process->_id < 1)
+        {
+            return -1;
+        }
         object_process->_status = PROCESS_STATUS_WAIT;
         object_process->_selement = object_element;
         object_process->_selement->_data = (void *) object_process;
         object_process->_data = (void *) (object);
-        object_process->_id = ((process_slice_t*) slice_element->_data)->_id;
         object_process->_selement->_priority = priority;
         slist_selement_insert(&_waiting_process_slist, object_process->_selement);
         return 1;

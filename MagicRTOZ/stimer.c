@@ -14,7 +14,6 @@ int8_t stimer_install(stimer_t* stimer, uint8_t priority, uint32_t time_waiting_
     {
         static process_slice_t process_slice = PROCESS_SLICE_NEW(&_stimer_schedule, &_stimer_run);
         static selement_t slice_selement = SLIST_ELEMENT_NEW(&process_slice, 0);
-        _process_init(&slice_selement);
         stimer->_time_waiting_ms = time_waiting_ms < (PROCESS_MINIMUM_TIME_WAITING_MS) ? (PROCESS_MINIMUM_TIME_WAITING_MS) : time_waiting_ms;
         stimer->_time_counter_ms = stimer->_time_waiting_ms;
         stimer->_run_mode = run_mode;

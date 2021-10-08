@@ -4,13 +4,10 @@
 void _task_schedule(process_t* process);
 void _task_run(process_t* process);
 
-static task_t* _running_task = NULL;
-
 int8_t task_install(task_t* task, uint8_t priority)
 {
     static process_slice_t process_slice = PROCESS_SLICE_NEW(&_task_schedule, &_task_run);
     static selement_t slice_selement = SLIST_ELEMENT_NEW(&process_slice, 0);
-    _process_init(&slice_selement);
     task->_time_waiting_ms = (PROCESS_MINIMUM_TIME_WAITING_MS);
     return _process_install(
         &slice_selement,
@@ -84,6 +81,7 @@ void _task_schedule(process_t* process)
 
 void _task_run(process_t* process)
 {
+    static task_t* _running_task = NULL;
     if (process != NULL)
     {
         _running_task = (task_t*) process->_data;
