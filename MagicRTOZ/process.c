@@ -16,8 +16,11 @@ int8_t _process_init(selement_t* slice)
 {
     if (slice != NULL && slice->_data != NULL)
     {
-        slist_selement_insert(&_slice_process_slist, slice);
-        ((process_slice_t*) slice->_data)->_id = slist_size_get(&_slice_process_slist);
+        if (((process_slice_t*) slice->_data)->_id == 0)
+        {
+            slist_selement_insert(&_slice_process_slist, slice);
+            ((process_slice_t*) slice->_data)->_id = slist_size_get(&_slice_process_slist);
+        }
         return ((process_slice_t*) slice->_data)->_id;
     }
     return -1;
@@ -83,12 +86,24 @@ void _process_run(void)
     }
 }
 
-int8_t _process_install(process_t* process, uint8_t priority)
+int8_t _process_install(selement_t* slice_element, process_t* object_process, selement_t* object_element, void* object, uint8_t priority)
 {
-    if(process != NULL && process->_selement != NULL)
+    if
+    (
+        slice_element != NULL &&
+        object_process != NULL &&
+        object_element != NULL &&
+        object != NULL &&
+        ((process_slice_t*) slice_element->_data)->_id > 0
+    )
     {
-        process->_selement->_priority = priority;
-        slist_selement_insert(&_waiting_process_slist, process->_selement);
+        object_process->_status = PROCESS_STATUS_WAIT;
+        object_process->_selement = object_element;
+        object_process->_selement->_data = (void *) object_process;
+        object_process->_data = (void *) (object);
+        object_process->_id = ((process_slice_t*) slice_element->_data)->_id;
+        object_process->_selement->_priority = priority;
+        slist_selement_insert(&_waiting_process_slist, object_process->_selement);
         return 1;
     }
     return -1;
