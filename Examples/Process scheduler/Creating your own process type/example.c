@@ -51,9 +51,9 @@ void _myProcess_run(process_t* process)
 
         // Executing process callback.
         _running_myProcess->_callback
-                (
-                        (void*) _running_myProcess->_arguments
-                );
+        (
+            (void*) _running_myProcess->_arguments
+        );
         _running_myProcess = NULL;
 
         // Unqueuing the process.
@@ -66,27 +66,27 @@ int8_t myProcess_install(myProcess_t* myProcess, uint8_t priority)
 {
     // Creating a process slice object.
     static process_slice_t process_slice = PROCESS_SLICE_NEW
-            (
-                    &_myProcess_schedule,
-                    &_myProcess_run
-            );
+    (
+        &_myProcess_schedule,
+        &_myProcess_run
+    );
 
     // Encapsulating the process slice into a static element.
     static selement_t slice_selement = SLIST_ELEMENT_NEW
-            (
-                    &process_slice,
-                    0
-            );
+    (
+        &process_slice,
+        0
+    );
 
     // Installing process slice.
     return process_install
-            (
-                    &slice_selement,
-                    &myProcess->_process,
-                    &myProcess->_selement,
-                    myProcess,
-                    priority
-            );
+    (
+        &slice_selement,
+        &myProcess->_process,
+        &myProcess->_selement,
+        myProcess,
+        priority
+    );
 }
 
 // Function that will be to queue myProcess process.
@@ -117,9 +117,9 @@ int main()
     static int number = 0;
     static myProcess_t myProcess = MYPROCESS_NEW
     (
-            "Test",
-            myProcess_callback,
-            &number
+        "Test",
+        myProcess_callback,
+        &number
     );
     myProcess_install(&myProcess, 1);
     myProcess_start(&myProcess);
