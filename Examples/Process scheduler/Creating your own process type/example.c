@@ -21,11 +21,11 @@ typedef struct myProcess_t
 
 // Creation of myProcess "constructor".
 #define MYPROCESS_NEW(name, callback, arguments) \
-    {\
-        PROCESS_BUILD(name),\
-        ._arguments = (const void*) (arguments),\
-        ._callback = (const void (*)(void*)) (callback)\
-    }
+{\
+    PROCESS_BUILD(name),\
+    ._arguments = (const void*) (arguments),\
+    ._callback = (const void (*)(void*)) (callback)\
+}
 
 // Running myProcess process pointer.
 static myProcess_t* _running_myProcess = NULL;
