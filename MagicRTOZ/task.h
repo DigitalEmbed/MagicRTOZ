@@ -38,7 +38,7 @@ void callback(void* _self)\
     ((task_t*) _self)->_line = 0;\
 }
 
-#define TASK_YIELD() task_delay(0)
+#define TASK_YIELD() TASK_DELAY(0)
 
 #define TASK_DELAY(time_ms)\
     ((task_t*) _self)->_time_waiting_ms = ((time_ms) > (PROCESS_MINIMUM_TIME_WAITING_MS) ? (time_ms) : (PROCESS_MINIMUM_TIME_WAITING_MS)) ; ((task_t*) _self)->_line = __LINE__ ; return ; case __LINE__:

@@ -12,6 +12,8 @@ static slist_t _slice_process_slist = SLIST_NEW();
 static process_t* _running_process = NULL;
 static uint16_t _running_process_runtime_ms = 0;
 
+int8_t _process_init(selement_t* slice);
+
 int8_t _process_init(selement_t* slice)
 {
     if (slice != NULL && slice->_data != NULL)
@@ -26,7 +28,7 @@ int8_t _process_init(selement_t* slice)
     return -1;
 }
 
-void _process_schedule(void)
+void process_schedule(void)
 {
     static process_slice_t* current_slice = NULL;
     if (_running_process != NULL)
@@ -59,7 +61,7 @@ void _process_schedule(void)
     SLIST_FOREACH_END
 }
 
-void _process_run(void)
+void process_run(void)
 {
     static process_slice_t* current_slice = NULL;
     while(slist_size_get(&_running_process_slist) != 0)
@@ -86,7 +88,7 @@ void _process_run(void)
     }
 }
 
-int8_t _process_install(selement_t* slice_element, process_t* object_process, selement_t* object_element, void* object, uint8_t priority)
+int8_t process_install(selement_t* slice_element, process_t* object_process, selement_t* object_element, void* object, uint8_t priority)
 {
     if
     (
@@ -112,7 +114,7 @@ int8_t _process_install(selement_t* slice_element, process_t* object_process, se
     return -1;
 }
 
-void _process_resume(process_t* process)
+void process_resume(process_t* process)
 {
     if (process == NULL)
     {
@@ -125,7 +127,7 @@ void _process_resume(process_t* process)
     }
 }
 
-void _process_priority_set(process_t* process, uint8_t priority)
+void process_priority_set(process_t* process, uint8_t priority)
 {
     if (process == NULL)
     {
@@ -140,7 +142,7 @@ void _process_priority_set(process_t* process, uint8_t priority)
     }
 }
 
-void _process_suspend(process_t* process)
+void process_suspend(process_t* process)
 {
     if (process == NULL)
     {
@@ -152,7 +154,7 @@ void _process_suspend(process_t* process)
     }
 }
 
-const char* _process_getName(process_t* process)
+const char* process_getName(process_t* process)
 {
     if(process == NULL)
     {

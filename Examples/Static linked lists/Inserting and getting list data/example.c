@@ -3,7 +3,7 @@
  *  \author     Jorge Henrique Moreira Santana
  *  \date       02/10/2021
  *  \warning    Be very careful when using Macros.
- *              Variables and functions starting with the '$' character are private and must not be modified.
+ *              Variables and functions starting with the '_' character are private and must not be modified.
  *              All data variables must be global or static.
  *  \copyright  MIT License.
  */

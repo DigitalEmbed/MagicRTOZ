@@ -17,7 +17,7 @@ int8_t stimer_install(stimer_t* stimer, uint8_t priority, uint32_t time_waiting_
         stimer->_time_waiting_ms = time_waiting_ms < (PROCESS_MINIMUM_TIME_WAITING_MS) ? (PROCESS_MINIMUM_TIME_WAITING_MS) : time_waiting_ms;
         stimer->_time_counter_ms = stimer->_time_waiting_ms;
         stimer->_run_mode = run_mode;
-        return _process_install(
+        return process_install(
             &slice_selement,
             &stimer->_process,
             &stimer->_selement,
@@ -32,11 +32,11 @@ void stimer_suspend(stimer_t* stimer)
 {
     if (stimer != NULL && stimer->_process._data != NULL)
     {
-        _process_suspend(&stimer->_process);
+        process_suspend(&stimer->_process);
     }
     else
     {
-        _process_suspend(NULL);
+        process_suspend(NULL);
     }
 }
 
@@ -44,11 +44,11 @@ void stimer_resume(stimer_t* stimer)
 {
     if (stimer != NULL && stimer->_process._data != NULL)
     {
-        _process_resume(&stimer->_process);
+        process_resume(&stimer->_process);
     }
     else
     {
-        _process_resume(NULL);
+        process_resume(NULL);
     }
 }
 
@@ -56,11 +56,11 @@ void stimer_priority_set(stimer_t* stimer, uint8_t priority)
 {
     if (stimer != NULL)
     {
-        _process_priority_set(&stimer->_process, priority);
+        process_priority_set(&stimer->_process, priority);
     }
     else
     {
-        _process_priority_set(NULL, priority);
+        process_priority_set(NULL, priority);
     }
 }
 
@@ -82,9 +82,9 @@ const char* stimer_getName(stimer_t* stimer)
 {
     if (stimer != NULL)
     {
-        return _process_getName(&stimer->_process);
+        return process_getName(&stimer->_process);
     }
-    return _process_getName(NULL);
+    return process_getName(NULL);
 }
 
 void _stimer_schedule(process_t* process)

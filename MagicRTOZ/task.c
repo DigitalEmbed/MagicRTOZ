@@ -9,7 +9,7 @@ int8_t task_install(task_t* task, uint8_t priority)
     static process_slice_t process_slice = PROCESS_SLICE_NEW(&_task_schedule, &_task_run);
     static selement_t slice_selement = SLIST_ELEMENT_NEW(&process_slice, 0);
     task->_time_waiting_ms = (PROCESS_MINIMUM_TIME_WAITING_MS);
-    return _process_install(
+    return process_install(
         &slice_selement,
         &task->_process,
         &task->_selement,
@@ -22,11 +22,11 @@ void task_suspend(task_t* task)
 {
     if (task != NULL && task->_process._data != NULL)
     {
-        _process_suspend(&task->_process);
+        process_suspend(&task->_process);
     }
     else
     {
-        _process_suspend(NULL);
+        process_suspend(NULL);
     }
 }
 
@@ -34,11 +34,11 @@ void task_resume(task_t* task)
 {
     if (task != NULL && task->_process._data != NULL)
     {
-        _process_resume(&task->_process);
+        process_resume(&task->_process);
     }
     else
     {
-        _process_resume(NULL);
+        process_resume(NULL);
     }
 }
 
@@ -46,11 +46,11 @@ void task_priority_set(task_t* task, uint8_t priority)
 {
     if (task != NULL)
     {
-        _process_priority_set(&task->_process, priority);
+        process_priority_set(&task->_process, priority);
     }
     else
     {
-        _process_priority_set(NULL, priority);
+        process_priority_set(NULL, priority);
     }
 }
 
@@ -58,9 +58,9 @@ const char* task_getName(task_t* task)
 {
     if (task != NULL)
     {
-        return _process_getName(&task->_process);
+        return process_getName(&task->_process);
     }
-    return _process_getName(NULL);
+    return process_getName(NULL);
 }
 
 void _task_schedule(process_t* process)
