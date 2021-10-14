@@ -64,15 +64,15 @@
         // Creating a process slice object.
         static process_slice_t process_slice = PROCESS_SLICE_NEW
         (
-                &_myProcess_schedule,
-                &_myProcess_run
+            &_myProcess_schedule,
+            &_myProcess_run
         );
 
         // Encapsulating the process slice into a static element.
         static selement_t slice_selement = SLIST_ELEMENT_NEW
         (
-                &process_slice,
-                0
+            &process_slice,
+            0
         );
 
         // Installing process slice.
@@ -103,14 +103,13 @@
     void myProcess_callback(void* arguments)
     {
         int* number = (int*) arguments;
-        *number++;
         printf("Number: %d\n", *number);
     }
 
     // Testing main
     int main()
     {
-        static int number = 0;
+        static int number = 55;
         static myProcess_t myProcess = MYPROCESS_NEW
         (
             "Test",
