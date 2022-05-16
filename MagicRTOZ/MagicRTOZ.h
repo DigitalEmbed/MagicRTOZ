@@ -4,11 +4,11 @@
     extern "C" {
 #endif
 
+#include "./status.h"
 #include "./slist.h"
 #include "./task.h"
 #include "./stimer.h"
-
-#include "./uHal.h"
+#include "./gpio.h"
 
 #ifdef __cplusplus
     }
