@@ -18,29 +18,29 @@
     {
       return STATUS_ERROR;
     }
-    if (gpio->pin > 7)
+    if (gpio->_pin > 7)
     {
       return STATUS_ERROR;
     }
 
-    switch(gpio->group)
+    switch(gpio->_group)
     {
-      case GPIO_GROUP_B: gpio->deprived = (struct _gpio_t*) &PINB ; break;
-      case GPIO_GROUP_C: gpio->deprived = (struct _gpio_t*) &PINC ; break;
-      case GPIO_GROUP_D: gpio->deprived = (struct _gpio_t*) &PIND ; break;
+      case GPIO_GROUP_B: gpio->_deprived = (struct _gpio_t*) &PINB ; break;
+      case GPIO_GROUP_C: gpio->_deprived = (struct _gpio_t*) &PINC ; break;
+      case GPIO_GROUP_D: gpio->_deprived = (struct _gpio_t*) &PIND ; break;
       default: return STATUS_ERROR;
     }
     
-    if (gpio->mode == GPIO_MODE_OUTPUT)
+    if (gpio->_mode == GPIO_MODE_OUTPUT)
     {
-      gpio->deprived->reg_ddr |= (1 << gpio->pin);
+      gpio->_deprived->reg_ddr |= (1 << gpio->_pin);
     }
     else
     {
-      gpio->deprived->reg_ddr &= ~(1 << gpio->pin);
-      if (gpio->pull_resistor == GPIO_PULL_RESISTOR_PULL_UP)
+      gpio->_deprived->reg_ddr &= ~(1 << gpio->_pin);
+      if (gpio->_pull_resistor == GPIO_PULL_RESISTOR_PULL_UP)
       {
-        gpio->deprived->reg_port |= (1 << gpio->pin);
+        gpio->_deprived->reg_port |= (1 << gpio->_pin);
       }
     }
     return STATUS_OK; 
@@ -52,15 +52,15 @@
     {
       return STATUS_ERROR;
     }
-    if(gpio->mode == GPIO_MODE_INPUT)
+    if(gpio->_mode == GPIO_MODE_INPUT)
     {
       return STATUS_ERROR;
     }
     
     switch (state)
     {
-      case GPIO_STATE_LOW: gpio->deprived->reg_port &= ~(1 << gpio->pin); break;
-      case GPIO_STATE_HIGH: gpio->deprived->reg_port |= (1 << gpio->pin); break;
+      case GPIO_STATE_LOW: gpio->_deprived->reg_port &= ~(1 << gpio->_pin); break;
+      case GPIO_STATE_HIGH: gpio->_deprived->reg_port |= (1 << gpio->_pin); break;
       default: return STATUS_ERROR;
     }
 
@@ -73,12 +73,12 @@
     {
       return STATUS_ERROR;
     }
-    if(gpio->mode == GPIO_MODE_INPUT)
+    if(gpio->_mode == GPIO_MODE_INPUT)
     {
       return STATUS_ERROR;
     }
 
-    gpio->deprived->reg_port ^= (1 << gpio->pin);
+    gpio->_deprived->reg_port ^= (1 << gpio->_pin);
     return STATUS_OK;
   }
 
@@ -88,11 +88,11 @@
     {
       return STATUS_ERROR;
     }
-    if(gpio->mode == GPIO_MODE_OUTPUT)
+    if(gpio->_mode == GPIO_MODE_OUTPUT)
     {
       return STATUS_ERROR;
     }
-    *state = ((gpio->deprived->reg_pin >> gpio->pin) & 1) == 0 ? GPIO_STATE_LOW : GPIO_STATE_HIGH;
+    *state = ((gpio->_deprived->reg_pin >> gpio->_pin) & 1) == 0 ? GPIO_STATE_LOW : GPIO_STATE_HIGH;
     return STATUS_OK;
   }
 

@@ -7,6 +7,15 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define GPIO_NEW(pin, group, mode, pull_resistor)\
+{\
+  ._pin = pin,\
+  ._group = group,\
+  ._mode = mode,\
+  ._pull_resistor = pull_resistor,\
+  ._deprived = NULL,\
+}
+
 struct _gpio_t;
 
 typedef enum
@@ -60,11 +69,11 @@ typedef enum
 
 typedef struct 
 {
-  uint8_t pin;
-  gpio_group_t group;
-  gpio_mode_t mode;
-  gpio_pull_resisitor_t pull_resistor;
-  struct _gpio_t* deprived;
+  uint8_t _pin;
+  gpio_group_t _group;
+  gpio_mode_t _mode;
+  gpio_pull_resisitor_t _pull_resistor;
+  struct _gpio_t* _deprived;
 } gpio_t;
 
 status_t gpio_init(gpio_t* gpio);
