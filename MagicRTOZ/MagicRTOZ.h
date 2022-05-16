@@ -8,6 +8,8 @@
 #include "./task.h"
 #include "./stimer.h"
 
+#include "./uHal.h"
+
 #ifdef __cplusplus
     }
 #endif

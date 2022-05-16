@@ -1,7 +1,7 @@
-#include "../config.h"
+#include "./attiny85.h"
 #if (defined(__AVR_ATtiny85__) && (ENABLE_GPIO == 1))
 
-  #include "../uhal.h"
+  #include "./uhal.h"
   #include <avr/io.h>
   #include <stdio.h>
 

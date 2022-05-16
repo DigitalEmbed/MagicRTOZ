@@ -1,7 +1,7 @@
-#include "../config.h"
+#include "./atmega328.h"
 #if ((defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)) && (ENABLE_GPIO == 1))
 
-  #include "../uhal.h"
+  #include "./uHal.h"
   #include <avr/io.h>
   #include <stdio.h>
 
