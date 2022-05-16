@@ -157,6 +157,8 @@ process_t _process
     ._name = (name),\
     ._id = 0,\
     ._data = NULL,\
+    ._status = PROCESS_STATUS_STOP,\
+    ._selement = NULL,\
     ._last_runtime_ms = 0,\
     ._average_runtime_ms = 0,\
 }
