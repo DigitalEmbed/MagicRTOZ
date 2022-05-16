@@ -223,17 +223,24 @@
 */
 #define SLIST_FOREACH_INIT(slist, selement, selement_type)\
 {\
-    for (uint8_t _counter = 0 ; _counter < slist_size_get(&slist) ; _counter++)\
+    static uint8_t _counter = 0;\
+    for (_counter = 0 ; _counter < slist_size_get(&slist) ; _counter++)\
     {\
-        uint8_t LIST_FOREACH_POSITION = _counter;\
-        selement_type* selement = (selement_type*) slist_position_dataGet(&slist, _counter);
+        static selement_type* selement = NULL;\
+        selement = (selement_type*) slist_position_dataGet(&slist, _counter);
 
 /*! \def LIST_FOREACH_END
     \brief End of for-each list loop structure.
 */
 #define SLIST_FOREACH_END\
     }\
+    _counter = 0;\
 }
+
+/*! \def SLIST_FOREACH_POSITION
+    \brief For-each static list counter.
+*/
+#define SLIST_FOREACH_POSITION _counter
 
 /*! \struct selement_t
  *  \brief Static list element type.

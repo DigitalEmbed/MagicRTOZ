@@ -14,15 +14,18 @@
     PROCESS_BUILD(name),\
     ._arguments = (const void*) (arguments),\
     ._callback = (const void (*)(void*)) (callback),\
+    ._time_waiting_ms = 0,\
+    ._time_counter_ms = 0,\
+    ._run_mode = STIMER_RUN_MODE_ONCE,\
 }
 
 #define STIMER_INIT(callback, argument, argument_type) \
 void callback(void* _self)\
 {\
     argument_type* argument = (argument_type*) ((stimer_t*) _self)->_arguments;\
+    (void)(argument);\
 
 #define STIMER_END \
-    (void)(argument);\
 }
 
 #define STIMER_RUN_ONCE_INIT \
@@ -47,7 +50,6 @@ stimer_run_mode_t;
 typedef struct stimer_t
 {
     PROCESS_STRUCT;
-    const char* _name;
     const void* _arguments;
     const void (*_callback)(void* self);
     uint32_t _time_waiting_ms;
