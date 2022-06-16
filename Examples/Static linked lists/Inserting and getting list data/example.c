@@ -38,7 +38,7 @@ int main(){
         int                     // Data element type
     )
     {
-        printf("Position %d: %d\n", LIST_FOREACH_POSITION, *buffer);
+        printf("Position %d: %d\n", SLIST_FOREACH_POSITION, *buffer);
     }
     SLIST_FOREACH_END
     return 0;

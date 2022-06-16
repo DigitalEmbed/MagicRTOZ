@@ -55,7 +55,7 @@ int main()
             printf
             (
                 " [%d] - %f\n",
-                LIST_FOREACH_POSITION,
+                SLIST_FOREACH_POSITION,
                 (float) *buffer
             );
         }
@@ -75,7 +75,7 @@ int main()
             printf
             (
                 " [%d] - %f\n",
-                LIST_FOREACH_POSITION,
+                SLIST_FOREACH_POSITION,
                 (float) *buffer
             );
         }
@@ -105,7 +105,7 @@ int main()
             printf
             (
                 " [%d] - %f\n",
-                LIST_FOREACH_POSITION,
+                SLIST_FOREACH_POSITION,
                 (float) *buffer
             );
         }
@@ -125,7 +125,7 @@ int main()
             printf
             (
                 " [%d] - %f\n",
-                LIST_FOREACH_POSITION,
+                SLIST_FOREACH_POSITION,
                 (float) *buffer
             );
         }
