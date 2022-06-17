@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include "./macros.h"
 
-#define GPIO_PREFIX_FUNCTION gpio
+#define _GPIO_PREFIX_FUNCTION gpio
 
 #define GPIO_FUNCTIONS_LIST\
   X(status_t, init, (gpio_t* gpio,  uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor))\
@@ -46,26 +46,30 @@ typedef enum
   GPIO_GROUP_X,
   GPIO_GROUP_Y,
   GPIO_GROUP_Z
-} gpio_group_t;
+}
+gpio_group_t;
 
 typedef enum
 {
   GPIO_MODE_INPUT,
   GPIO_MODE_OUTPUT
-} gpio_mode_t;
+}
+gpio_mode_t;
 
 typedef enum
 {
   GPIO_PULL_RESISTOR_NONE,
   GPIO_PULL_RESISTOR_PULL_UP,
   GPIO_PULL_RESISTOR_PULL_DOWN
-} gpio_pull_resisitor_t;
+}
+gpio_pull_resisitor_t;
 
 typedef enum
 {
   GPIO_STATE_LOW,
   GPIO_STATE_HIGH
-} gpio_state_t;
+}
+gpio_state_t;
 
 typedef struct 
 {
@@ -74,10 +78,11 @@ typedef struct
   gpio_mode_t _mode;
   gpio_pull_resisitor_t _pull_resistor;
   struct _gpio_t* _deprived;
-} gpio_t;
+}
+gpio_t;
 
 #define X(RETURN, FUNCTION, ARGUMENTS)\
-  RETURN JOIN_MACROS(GPIO_PREFIX_FUNCTION, _##FUNCTION) ARGUMENTS;
+  RETURN JOIN_MACROS(_GPIO_PREFIX_FUNCTION, _##FUNCTION) ARGUMENTS;
 
   GPIO_FUNCTIONS_LIST
 #undef X
@@ -94,7 +99,7 @@ typedef struct
   GPIO = 
   {
     #define X(RETURN, FUNCTION, ARGUMENTS)\
-      JOIN_MACROS(GPIO_PREFIX_FUNCTION, _##FUNCTION),
+      JOIN_MACROS(_GPIO_PREFIX_FUNCTION, _##FUNCTION),
 
       GPIO_FUNCTIONS_LIST
     #undef X
