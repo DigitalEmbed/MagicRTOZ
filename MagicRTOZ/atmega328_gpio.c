@@ -102,17 +102,4 @@
     return STATUS_OK;
   }
 
-  #if defined(ENABLE_SYSTEM_PSEUDO_CLASSES)
-
-    const gpio_class_t gpio_object = {
-      .init = &gpio_init,
-      .write = &gpio_write,
-      .toggle = &gpio_toggle,
-      .read = &gpio_read
-    };
-    
-    const gpio_class_t* GPIO = &gpio_object;
-
-  #endif
-
 #endif

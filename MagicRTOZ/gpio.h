@@ -7,6 +7,12 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define GPIO_FUNCTIONS_LIST\
+  X(status_t, init, (gpio_t* gpio,  uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor))\
+  X(status_t, write, (gpio_t* gpio, gpio_state_t state))\
+  X(status_t, toggle, (gpio_t* gpio))\
+  X(status_t, read, (gpio_t* const gpio, gpio_state_t* state))
+
 struct _gpio_t;
 
 typedef enum
@@ -67,22 +73,29 @@ typedef struct
   struct _gpio_t* _deprived;
 } gpio_t;
 
-status_t gpio_init(gpio_t* gpio,  uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor);
-status_t gpio_write(gpio_t* gpio, gpio_state_t state);
-status_t gpio_toggle(gpio_t* gpio);
-status_t gpio_read(gpio_t* const gpio, gpio_state_t* state);
+#define X(RETURN, FUNCTION, ARGUMENTS)\
+  RETURN gpio_##FUNCTION ARGUMENTS;
+
+  GPIO_FUNCTIONS_LIST
+#undef X
 
 #if defined(ENABLE_SYSTEM_PSEUDO_CLASSES)
-  typedef struct 
+  const struct gpio_class_t
   {
-    status_t (*init)(gpio_t* gpio, uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor);
-    status_t (*write)(gpio_t* gpio, gpio_state_t state);
-    status_t (*toggle)(gpio_t* gpio);
-    status_t (*read)(gpio_t* const gpio, gpio_state_t* state);
-  } 
-  gpio_class_t;
+    #define X(RETURN, FUNCTION, ARGUMENTS)\
+      RETURN (*FUNCTION) ARGUMENTS;
 
-  extern const gpio_class_t* GPIO;
+      GPIO_FUNCTIONS_LIST
+    #undef X
+  } 
+  GPIO = 
+  {
+    #define X(RETURN, FUNCTION, ARGUMENTS)\
+      gpio_##FUNCTION,
+
+      GPIO_FUNCTIONS_LIST
+    #undef X
+  };
 #endif
 
 #ifdef __cplusplus
