@@ -56,7 +56,7 @@ task_t;
 int8_t task_install(task_t* task, const uint8_t priority);
 void task_suspend(task_t* task);
 void task_resume(task_t* task);
-void task_priority_set(task_t* task, uint8_t priority);
+void task_setPriority(task_t* task, uint8_t priority);
 const char* task_getName(task_t* task);
 
 #ifdef __cplusplus

@@ -42,7 +42,7 @@ void task_resume(task_t* task)
     }
 }
 
-void task_priority_set(task_t* task, uint8_t priority)
+void task_setPriority(task_t* task, uint8_t priority)
 {
     if (task != NULL)
     {
