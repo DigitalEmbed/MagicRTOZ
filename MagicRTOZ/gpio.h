@@ -6,6 +6,9 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "./macros.h"
+
+#define GPIO_PREFIX_FUNCTION gpio
 
 #define GPIO_FUNCTIONS_LIST\
   X(status_t, init, (gpio_t* gpio,  uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor))\
@@ -74,7 +77,7 @@ typedef struct
 } gpio_t;
 
 #define X(RETURN, FUNCTION, ARGUMENTS)\
-  RETURN gpio_##FUNCTION ARGUMENTS;
+  RETURN JOIN_MACROS(GPIO_PREFIX_FUNCTION, _##FUNCTION) ARGUMENTS;
 
   GPIO_FUNCTIONS_LIST
 #undef X
@@ -91,7 +94,7 @@ typedef struct
   GPIO = 
   {
     #define X(RETURN, FUNCTION, ARGUMENTS)\
-      gpio_##FUNCTION,
+      JOIN_MACROS(GPIO_PREFIX_FUNCTION, _##FUNCTION),
 
       GPIO_FUNCTIONS_LIST
     #undef X
