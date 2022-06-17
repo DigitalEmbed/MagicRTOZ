@@ -102,4 +102,12 @@
     return STATUS_OK;
   }
 
+  const gpio_class_t GPIO = 
+  {
+    .init = &gpio_init,
+    .write = &gpio_write,
+    .toggle = &gpio_toggle,
+    .read = &gpio_read
+  };
+
 #endif

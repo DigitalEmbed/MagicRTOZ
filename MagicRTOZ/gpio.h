@@ -73,20 +73,16 @@ status_t gpio_toggle(gpio_t* gpio);
 status_t gpio_read(gpio_t* const gpio, gpio_state_t* state);
 
 #if defined(ENABLE_SYSTEM_PSEUDO_CLASSES)
-  const struct gpio_class_t
+  typedef struct
   {
     status_t (*init)(gpio_t* gpio, uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor);
     status_t (*write)(gpio_t* gpio, gpio_state_t state);
     status_t (*toggle)(gpio_t* gpio);
     status_t (*read)(gpio_t* const gpio, gpio_state_t* state);
-  } 
-  GPIO = 
-  {
-    .init = &gpio_init,
-    .write = &gpio_write,
-    .toggle = &gpio_toggle,
-    .read = &gpio_read
-  };
+  }
+  gpio_class_t;
+
+  extern const gpio_class_t GPIO;
 #endif
 
 #ifdef __cplusplus
