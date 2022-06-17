@@ -11,17 +11,23 @@
     volatile uint8_t reg_ddr;
     volatile uint8_t reg_port;
   };
-
-  status_t gpio_init(gpio_t* gpio)
+  
+  status_t gpio_init(gpio_t* gpio, uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor)
   {
     if (gpio == NULL)
     {
       return STATUS_ERROR;
     }
-    if (gpio->_pin > 7)
+    
+    if (pin > 7)
     {
       return STATUS_ERROR;
     }
+
+    gpio->_pin = pin;
+    gpio->_group = group;
+    gpio->_mode = mode;
+    gpio->_pull_resistor = pull_resistor;
 
     switch(gpio->_group)
     {
@@ -82,7 +88,7 @@
     return STATUS_OK;
   }
 
-  status_t gpio_read(gpio_t* gpio, gpio_state_t* state)
+  status_t gpio_read(gpio_t* const gpio, gpio_state_t* state)
   {
     if(gpio == NULL)
     {
@@ -95,5 +101,18 @@
     *state = ((gpio->_deprived->reg_pin >> gpio->_pin) & 1) == 0 ? GPIO_STATE_LOW : GPIO_STATE_HIGH;
     return STATUS_OK;
   }
+
+  #if defined(ENABLE_SYSTEM_PSEUDO_CLASSES)
+
+    const gpio_class_t gpio_object = {
+      .init = &gpio_init,
+      .write = &gpio_write,
+      .toggle = &gpio_toggle,
+      .read = &gpio_read
+    };
+    
+    const gpio_class_t* GPIO = &gpio_object;
+
+  #endif
 
 #endif

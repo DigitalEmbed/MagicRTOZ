@@ -7,15 +7,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define GPIO_NEW(pin, group, mode, pull_resistor)\
-{\
-  ._pin = pin,\
-  ._group = group,\
-  ._mode = mode,\
-  ._pull_resistor = pull_resistor,\
-  ._deprived = NULL,\
-}
-
 struct _gpio_t;
 
 typedef enum
@@ -76,10 +67,23 @@ typedef struct
   struct _gpio_t* _deprived;
 } gpio_t;
 
-status_t gpio_init(gpio_t* gpio);
+status_t gpio_init(gpio_t* gpio,  uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor);
 status_t gpio_write(gpio_t* gpio, gpio_state_t state);
 status_t gpio_toggle(gpio_t* gpio);
-status_t gpio_read(gpio_t* gpio, gpio_state_t* state);
+status_t gpio_read(gpio_t* const gpio, gpio_state_t* state);
+
+#if defined(ENABLE_SYSTEM_PSEUDO_CLASSES)
+  typedef struct 
+  {
+    status_t (*init)(gpio_t* gpio, uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor);
+    status_t (*write)(gpio_t* gpio, gpio_state_t state);
+    status_t (*toggle)(gpio_t* gpio);
+    status_t (*read)(gpio_t* const gpio, gpio_state_t* state);
+  } 
+  gpio_class_t;
+
+  extern const gpio_class_t* GPIO;
+#endif
 
 #ifdef __cplusplus
   }
