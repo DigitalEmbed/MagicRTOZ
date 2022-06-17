@@ -77,7 +77,8 @@ const char* task_name_get(task_t* task);
             const char* (*get)(task_t* task);  
         } 
         Name;
-    } task_class_t;
+    }
+    task_class_t;
 
     extern const task_class_t Task;
 #endif

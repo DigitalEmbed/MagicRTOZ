@@ -72,7 +72,7 @@ status_t gpio_write(gpio_t* gpio, gpio_state_t state);
 status_t gpio_toggle(gpio_t* gpio);
 status_t gpio_read(gpio_t* const gpio, gpio_state_t* state);
 
-#if defined(ENABLE_SYSTEM_PSEUDO_CLASSES)
+#if(ENABLE_SYSTEM_PSEUDO_CLASSES == 1)
   typedef struct
   {
     status_t (*init)(gpio_t* gpio, uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor);
