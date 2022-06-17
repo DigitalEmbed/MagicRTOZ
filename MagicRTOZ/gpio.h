@@ -7,12 +7,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define GPIO_FUNCTIONS_LIST\
-  X(status_t, init, (gpio_t* gpio,  uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor))\
-  X(status_t, write, (gpio_t* gpio, gpio_state_t state))\
-  X(status_t, toggle, (gpio_t* gpio))\
-  X(status_t, read, (gpio_t* const gpio, gpio_state_t* state))
-
 struct _gpio_t;
 
 typedef enum
@@ -43,30 +37,26 @@ typedef enum
   GPIO_GROUP_X,
   GPIO_GROUP_Y,
   GPIO_GROUP_Z
-}
-gpio_group_t;
+} gpio_group_t;
 
 typedef enum
 {
   GPIO_MODE_INPUT,
   GPIO_MODE_OUTPUT
-}
-gpio_mode_t;
+} gpio_mode_t;
 
 typedef enum
 {
   GPIO_PULL_RESISTOR_NONE,
   GPIO_PULL_RESISTOR_PULL_UP,
   GPIO_PULL_RESISTOR_PULL_DOWN
-}
-gpio_pull_resisitor_t;
+} gpio_pull_resisitor_t;
 
 typedef enum
 {
   GPIO_STATE_LOW,
   GPIO_STATE_HIGH
-}
-gpio_state_t;
+} gpio_state_t;
 
 typedef struct 
 {
@@ -75,31 +65,27 @@ typedef struct
   gpio_mode_t _mode;
   gpio_pull_resisitor_t _pull_resistor;
   struct _gpio_t* _deprived;
-}
-gpio_t;
+} gpio_t;
 
-#define X(RETURN, FUNCTION, ARGUMENTS)\
-  RETURN gpio_##FUNCTION ARGUMENTS;
-
-  GPIO_FUNCTIONS_LIST
-#undef X
+status_t gpio_init(gpio_t* gpio,  uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor);
+status_t gpio_write(gpio_t* gpio, gpio_state_t state);
+status_t gpio_toggle(gpio_t* gpio);
+status_t gpio_read(gpio_t* const gpio, gpio_state_t* state);
 
 #if defined(ENABLE_SYSTEM_PSEUDO_CLASSES)
   const struct gpio_class_t
   {
-    #define X(RETURN, FUNCTION, ARGUMENTS)\
-      RETURN (*FUNCTION) ARGUMENTS;
-
-      GPIO_FUNCTIONS_LIST
-    #undef X
+    status_t (*init)(gpio_t* gpio, uint8_t pin, gpio_group_t group, gpio_mode_t mode, gpio_pull_resisitor_t pull_resistor);
+    status_t (*write)(gpio_t* gpio, gpio_state_t state);
+    status_t (*toggle)(gpio_t* gpio);
+    status_t (*read)(gpio_t* const gpio, gpio_state_t* state);
   } 
   GPIO = 
   {
-    #define X(RETURN, FUNCTION, ARGUMENTS)\
-      gpio_##FUNCTION,
-
-      GPIO_FUNCTIONS_LIST
-    #undef X
+    .init = &gpio_init,
+    .write = &gpio_write,
+    .toggle = &gpio_toggle,
+    .read = &gpio_read
   };
 #endif
 
