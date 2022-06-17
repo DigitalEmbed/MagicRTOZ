@@ -57,31 +57,7 @@ int8_t task_install(task_t* task, const uint8_t priority);
 void task_suspend(task_t* task);
 void task_resume(task_t* task);
 void task_priority_set(task_t* task, uint8_t priority);
-const char* task_name_get(task_t* task);
-
-#if(ENABLE_SYSTEM_PSEUDO_CLASSES == 1)
-    typedef struct
-    {
-        int8_t (*install)(task_t* task, const uint8_t priority);
-        void (*suspend)(task_t* task);
-        void (*resume)(task_t* task);
-    
-        struct priority_class_t
-        {
-            void (*set)(task_t* task, uint8_t priority);
-        } 
-        Priority;
-    
-        struct name_class_t
-        {
-            const char* (*get)(task_t* task);  
-        } 
-        Name;
-    }
-    task_class_t;
-
-    extern const task_class_t Task;
-#endif
+const char* task_getName(task_t* task);
 
 #ifdef __cplusplus
     }

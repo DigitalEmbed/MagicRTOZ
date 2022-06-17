@@ -54,7 +54,7 @@ void task_priority_set(task_t* task, uint8_t priority)
     }
 }
 
-const char* task_name_get(task_t* task)
+const char* task_getName(task_t* task)
 {
     if (task != NULL)
     {
@@ -93,20 +93,3 @@ void _task_run(process_t* process)
         _running_task = NULL;
     }
 }
-
-#if(ENABLE_SYSTEM_PSEUDO_CLASSES == 1)
-    const task_class_t Task = 
-    {
-        .install = &task_install,
-        .suspend = &task_suspend,
-        .resume = &task_resume,
-        .Priority = 
-        {
-            .set = &task_priority_set,
-        },
-        .Name = 
-        {
-            .get = &task_name_get,
-        },
-    };
-#endif
