@@ -7,9 +7,9 @@
 
   struct _gpio_t
   {
-    volatile uint8_t reg_pin;
-    volatile uint8_t reg_ddr;
-    volatile uint8_t reg_port;
+    volatile uint8_t PIN;
+    volatile uint8_t DDR;
+    volatile uint8_t PORT;
   };
 
   status_t gpio_init(gpio_t* gpio)
@@ -33,14 +33,14 @@
     
     if (gpio->_mode == GPIO_MODE_OUTPUT)
     {
-      gpio->_deprived->reg_ddr |= (1 << gpio->_pin);
+      gpio->_deprived->DDR |= (1 << gpio->_pin);
     }
     else
     {
-      gpio->_deprived->reg_ddr &= ~(1 << gpio->_pin);
+      gpio->_deprived->DDR &= ~(1 << gpio->_pin);
       if (gpio->_pull_resistor == GPIO_PULL_RESISTOR_PULL_UP)
       {
-        gpio->_deprived->reg_port |= (1 << gpio->_pin);
+        gpio->_deprived->PORT |= (1 << gpio->_pin);
       }
     }
     return STATUS_OK; 
@@ -59,8 +59,8 @@
     
     switch (state)
     {
-      case GPIO_STATE_LOW: gpio->_deprived->reg_port &= ~(1 << gpio->_pin); break;
-      case GPIO_STATE_HIGH: gpio->_deprived->reg_port |= (1 << gpio->_pin); break;
+      case GPIO_STATE_LOW: gpio->_deprived->PORT &= ~(1 << gpio->_pin); break;
+      case GPIO_STATE_HIGH: gpio->_deprived->PORT |= (1 << gpio->_pin); break;
       default: return STATUS_ERROR;
     }
 
@@ -78,7 +78,7 @@
       return STATUS_ERROR;
     }
 
-    gpio->_deprived->reg_port ^= (1 << gpio->_pin);
+    gpio->_deprived->PORT ^= (1 << gpio->_pin);
     return STATUS_OK;
   }
 
@@ -92,7 +92,7 @@
     {
       return STATUS_ERROR;
     }
-    *state = ((gpio->_deprived->reg_pin >> gpio->_pin) & 1) == 0 ? GPIO_STATE_LOW : GPIO_STATE_HIGH;
+    *state = ((gpio->_deprived->PIN >> gpio->_pin) & 1) == 0 ? GPIO_STATE_LOW : GPIO_STATE_HIGH;
     return STATUS_OK;
   }
 

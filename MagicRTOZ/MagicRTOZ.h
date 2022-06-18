@@ -9,6 +9,7 @@
 #include "./task.h"
 #include "./stimer.h"
 #include "./gpio.h"
+#include "./htimer.h"
 
 #ifdef __cplusplus
     }

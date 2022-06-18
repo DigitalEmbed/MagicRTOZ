@@ -52,7 +52,7 @@ void stimer_resume(stimer_t* stimer)
     }
 }
 
-void stimer_priority_set(stimer_t* stimer, uint8_t priority)
+void stimer_setPriority(stimer_t* stimer, uint8_t priority)
 {
     if (stimer != NULL)
     {
@@ -64,7 +64,7 @@ void stimer_priority_set(stimer_t* stimer, uint8_t priority)
     }
 }
 
-void stimer_waitingTimer_set(stimer_t* stimer, uint32_t time_waiting_ms)
+void stimer_setWaitingTimer(stimer_t* stimer, uint32_t time_waiting_ms)
 {
     if (stimer == NULL)
     {

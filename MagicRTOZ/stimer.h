@@ -61,8 +61,8 @@ stimer_t;
 int8_t stimer_install(stimer_t* stimer, uint8_t priority, uint32_t time_waiting_ms, stimer_run_mode_t run_mode);
 void stimer_suspend(stimer_t* stimer);
 void stimer_resume(stimer_t* stimer);
-void stimer_priority_set(stimer_t* stimer, uint8_t priority);
-void stimer_waitingTimer_set(stimer_t* stimer, uint32_t time_waiting_ms);
+void stimer_setPriority(stimer_t* stimer, uint8_t priority);
+void stimer_setWaitingTimer(stimer_t* stimer, uint32_t time_waiting_ms);
 const char* stimer_getName(stimer_t* stimer);
 
 #ifdef __cplusplus
